@@ -1,2 +1,2 @@
 # minigrep
-A rust command line utility
+A rust command line utility.
