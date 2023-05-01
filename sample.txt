@@ -1,0 +1,14 @@
+A language named Rust came to be,
+Built for speed and safety, you'll see,
+Its memory management, so sublime,
+No more crashes, no more wasted time.
+
+With ownership and borrowing rules,
+Writing safe code is no longer a duel,
+Its syntax clean and easy to learn,
+Rust has shown its skills, and we all yearn.
+
+For performance that's fast as a flash,
+Rust is the language that won't crash,
+A community that's helpful and bright,
+Rust is a language that's taking flight.
