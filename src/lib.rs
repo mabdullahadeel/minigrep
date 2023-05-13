@@ -26,12 +26,7 @@ pub struct Config {
     pub ignore_case: bool
 }
 
-fn args_has_no_case(args: &Vec<String>) -> bool {
-    if args.len() < 4 {
-        return false;
-    }
-
-    let fourth_arg = args[3].clone();
+fn args_has_no_case(fourth_arg: String) -> bool {
     let fourth_arg: Vec<&str> = fourth_arg.split("=").collect();
     
     if fourth_arg.len() != 2 {
@@ -43,14 +38,24 @@ fn args_has_no_case(args: &Vec<String>) -> bool {
 }
 
 impl Config {
-    pub fn build(args: &Vec<String>) -> Result<Self, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments")
-        }
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Self, &'static str> {
+        args.next(); // ignore the name of the program;
+        let (total_cmd_args, _) = args.size_hint();
 
-        let query = args[1].clone();
-        let file_path = args[2].clone();
-        let ignore_case = args_has_no_case(&args) || env::var(IGNORE_CASE_KEY).is_ok();
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Did not get a query string")
+        };
+
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Did not get a file path")
+        };
+
+        let ignore_case =  total_cmd_args < 4 || match args.next() {
+            Some(arg) => args_has_no_case(arg) || env::var(IGNORE_CASE_KEY).is_ok(),
+            None => false
+        };
         
         return Ok(
             Self { query, file_path, ignore_case }
